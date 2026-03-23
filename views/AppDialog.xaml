@@ -1,0 +1,160 @@
+<Window x:Class="SMDWin.Views.AppDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="SMDWin"
+        SizeToContent="WidthAndHeight"
+        MinWidth="320" MaxWidth="520"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize">
+  <Window.Resources>
+    <!-- Note: BgCardColor/BgCardBrush etc. are set by ThemeManager at runtime
+         and injected via MergedDictionaries in ShowCore() -->
+    <!-- local fade-in -->
+    <Style x:Key="DlgBtnStyle" TargetType="Button">
+      <Setter Property="Background"      Value="{DynamicResource BgCardBrush}"/>
+      <Setter Property="Foreground"      Value="{DynamicResource TextPrimaryBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush"     Value="{DynamicResource CardBorderBrush}"/>
+      <Setter Property="Padding"         Value="22,7"/>
+      <Setter Property="FontSize"        Value="12"/>
+      <Setter Property="FontWeight"      Value="SemiBold"/>
+      <Setter Property="MinWidth"        Value="80"/>
+      <Setter Property="Height"          Value="32"/>
+      <Setter Property="Cursor"          Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="Bd"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="8" Padding="{TemplateBinding Padding}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                TextElement.Foreground="{TemplateBinding Foreground}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background"  Value="{DynamicResource BgHoverBrush}"/>
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Bd" Property="Opacity" Value="0.72"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="DlgPrimaryBtnStyle" TargetType="Button" BasedOn="{StaticResource DlgBtnStyle}">
+      <Setter Property="Background"   Value="{DynamicResource AccentGradientBrush}"/>
+      <Setter Property="Foreground"   Value="White"/>
+      <Setter Property="BorderBrush"  Value="{DynamicResource AccentBrush}"/>
+    </Style>
+  </Window.Resources>
+
+  <!-- Outer shadow wrapper - explicit fallback ensures never transparent -->
+  <Border CornerRadius="12"
+          BorderThickness="1"
+          Padding="0">
+    <Border.Background>
+      <SolidColorBrush Color="{DynamicResource BgCardColor}"/>
+    </Border.Background>
+    <Border.BorderBrush>
+      <SolidColorBrush Color="{DynamicResource CardBorderColor}"/>
+    </Border.BorderBrush>
+    <Border.Effect>
+      <DropShadowEffect BlurRadius="20" ShadowDepth="2" Color="#000000" Opacity="0.45"/>
+    </Border.Effect>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>  <!-- title bar -->
+        <RowDefinition Height="Auto"/>  <!-- body -->
+        <RowDefinition Height="Auto"/>  <!-- buttons -->
+      </Grid.RowDefinitions>
+
+      <!-- ── Title bar ── -->
+      <Grid Grid.Row="0" x:Name="TitleBar"
+            MouseLeftButtonDown="TitleBar_MouseDown"
+            Cursor="SizeAll"
+            Background="Transparent"
+            Margin="0">
+        <Border CornerRadius="12,12,0,0"
+                Background="{DynamicResource BgHoverBrush}"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource CardBorderBrush}">
+          <Grid Margin="18,10,12,10">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <!-- Icon -->
+            <Viewbox x:Name="IconViewbox" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center">
+              <!-- swapped at runtime -->
+              <Canvas Width="24" Height="24" x:Name="IconCanvas">
+                <!-- info icon (default) -->
+                <Ellipse Width="24" Height="24" Fill="{DynamicResource AccentBrush}" Opacity="0.18"/>
+                <Path x:Name="IconPath"
+                      Fill="{DynamicResource AccentBrush}"
+                      Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+              </Canvas>
+            </Viewbox>
+            <!-- Title text -->
+            <TextBlock x:Name="TxtTitle" Grid.Column="1"
+                       Text="SMDWin"
+                       FontSize="13" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       VerticalAlignment="Center"/>
+            <!-- Close button -->
+            <Button Grid.Column="2" Width="26" Height="26"
+                    Background="Transparent" BorderThickness="0"
+                    Foreground="{DynamicResource TextSecondaryBrush}"
+                    FontSize="14" Cursor="Hand"
+                    Click="BtnClose_Click"
+                    ToolTip="Close">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="Bd" CornerRadius="6" Background="Transparent" Width="26" Height="26">
+                    <TextBlock Text="✕" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                  </Border>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                      <Setter TargetName="Bd" Property="Background" Value="{DynamicResource StatusCritBgBrush}"/>
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </Grid>
+        </Border>
+      </Grid>
+
+      <!-- ── Message body ── -->
+      <Border Grid.Row="1" Padding="22,18,22,10">
+        <TextBlock x:Name="TxtMessage"
+                   Text="Message"
+                   FontSize="13"
+                   Foreground="{DynamicResource TextPrimaryBrush}"
+                   TextWrapping="Wrap"
+                   MaxWidth="440"
+                   LineHeight="20"/>
+      </Border>
+
+      <!-- ── Buttons ── -->
+      <Border Grid.Row="2" Padding="22,6,22,18">
+        <StackPanel x:Name="ButtonPanel"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+          <!-- Buttons added at runtime -->
+        </StackPanel>
+      </Border>
+
+    </Grid>
+  </Border>
+</Window>

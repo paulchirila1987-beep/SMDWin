@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>SMDWin</AssemblyName>
+    <RootNamespace>SMDWin</RootNamespace>
+    <Product>SMD Win</Product>
+    <Company>SMDWin</Company>
+    <Version>3.0.0</Version>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\windiag.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
+    <!--
+      CS4014 (unawaited Task) — fixed in code with explicit _ = Task.Run(...) and comments.
+      CS0420 (volatile ref) — not present after audit; Interlocked/Volatile.Read used correctly.
+      CS0168 (unused variable) — fixed by using _ discard in catch blocks where needed.
+      NoWarn removed so these surface immediately if reintroduced.
+    -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="System.Management" Version="9.0.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.4" />
+    <!-- Logging — Serilog with rolling file sink + debug sink -->
+    <PackageReference Include="Serilog" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+  </ItemGroup>
+  <!-- Icon embedded as resource so WPF Window can reference it too -->
+  <ItemGroup>
+    <Resource Include="Assets\windiag.ico" />
+    <Resource Include="Assets\windiag.png" />
+  </ItemGroup>
+  <!-- Language packs — copied next to .exe so LanguageService can load them -->
+  <ItemGroup>
+    <Content Include="Languages\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,177 @@
+<Window x:Class="SMDWin.Views.FeaturesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="SMD Win — Features"
+        Width="820" Height="820"
+        MinWidth="660" MinHeight="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        FontFamily="Segoe UI"
+        Background="{DynamicResource BgDarkBrush}">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="32" ResizeBorderThickness="6"
+                        GlassFrameThickness="-1,-1,-1,-1"
+                        UseAeroCaptionButtons="True"/>
+  </shell:WindowChrome.WindowChrome>
+
+  <Window.Resources>
+    <!-- Column card -->
+    <Style x:Key="ColCardStyle" TargetType="Border">
+      <Setter Property="Background"      Value="{DynamicResource BgCardBrush}"/>
+      <Setter Property="BorderBrush"     Value="{DynamicResource CardBorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius"    Value="10"/>
+      <Setter Property="Padding"         Value="13,13"/>
+      <Setter Property="Margin"          Value="5,5"/>
+    </Style>
+    <!-- Column header text -->
+    <Style x:Key="ColHeaderStyle" TargetType="TextBlock">
+      <Setter Property="FontSize"       Value="12"/>
+      <Setter Property="FontWeight"     Value="Bold"/>
+      <Setter Property="Margin"         Value="0,0,0,8"/>
+      <Setter Property="TextAlignment"  Value="Center"/>
+      <Setter Property="Foreground"     Value="{DynamicResource AccentBrush}"/>
+    </Style>
+    <!-- Feature item -->
+    <Style x:Key="ItemStyle" TargetType="TextBlock">
+      <Setter Property="FontSize"     Value="11"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="LineHeight"   Value="18"/>
+      <Setter Property="Margin"       Value="0,1,0,1"/>
+      <Setter Property="Foreground"   Value="{DynamicResource TextSecondaryBrush}"/>
+    </Style>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- Banner -->
+    <Border x:Name="BannerBorder" Grid.Row="0" Height="50">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock x:Name="TxtAppName" Text="SMD Win" FontSize="15" FontWeight="Bold"
+                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+        <TextBlock x:Name="TxtBannerSub" FontSize="13" Opacity="0.75" VerticalAlignment="Center"/>
+      </StackPanel>
+    </Border>
+
+    <!-- Content: 2 rows x 3 cols -->
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+      <Grid x:Name="ContentGrid" Margin="10,6,10,6">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Row 0 -->
+        <!-- Card 1 — Monitoring -->
+        <Border x:Name="Card1" Grid.Row="0" Grid.Column="0" Style="{StaticResource ColCardStyle}">
+          <StackPanel>
+            <TextBlock x:Name="Ico1" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock x:Name="Hdr1" Style="{StaticResource ColHeaderStyle}"/>
+            <ItemsControl x:Name="Lst1">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" Style="{StaticResource ItemStyle}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Card 2 — Diagnostics -->
+        <Border x:Name="Card2" Grid.Row="0" Grid.Column="1" Style="{StaticResource ColCardStyle}">
+          <StackPanel>
+            <TextBlock x:Name="Ico2" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock x:Name="Hdr2" Style="{StaticResource ColHeaderStyle}"/>
+            <ItemsControl x:Name="Lst2">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" Style="{StaticResource ItemStyle}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Card 3 — System Tools -->
+        <Border x:Name="Card3" Grid.Row="0" Grid.Column="2" Style="{StaticResource ColCardStyle}">
+          <StackPanel>
+            <TextBlock x:Name="Ico3" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock x:Name="Hdr3" Style="{StaticResource ColHeaderStyle}"/>
+            <ItemsControl x:Name="Lst3">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" Style="{StaticResource ItemStyle}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Row 1 -->
+        <!-- Card 4 — Network Tools -->
+        <Border x:Name="Card4" Grid.Row="1" Grid.Column="0" Style="{StaticResource ColCardStyle}">
+          <StackPanel>
+            <TextBlock x:Name="Ico4" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock x:Name="Hdr4" Style="{StaticResource ColHeaderStyle}"/>
+            <ItemsControl x:Name="Lst4">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" Style="{StaticResource ItemStyle}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Card 5 — Benchmark & Test -->
+        <Border x:Name="Card5" Grid.Row="1" Grid.Column="1" Style="{StaticResource ColCardStyle}">
+          <StackPanel>
+            <TextBlock x:Name="Ico5" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock x:Name="Hdr5" Style="{StaticResource ColHeaderStyle}"/>
+            <ItemsControl x:Name="Lst5">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" Style="{StaticResource ItemStyle}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Card 6 — Driver Management -->
+        <Border x:Name="Card6" Grid.Row="1" Grid.Column="2" Style="{StaticResource ColCardStyle}">
+          <StackPanel>
+            <TextBlock x:Name="Ico6" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+            <TextBlock x:Name="Hdr6" Style="{StaticResource ColHeaderStyle}"/>
+            <ItemsControl x:Name="Lst6">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" Style="{StaticResource ItemStyle}"/>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+      </Grid>
+    </ScrollViewer>
+
+    <!-- Footer -->
+    <Border Grid.Row="2" Padding="0,6,0,10">
+      <TextBlock x:Name="TxtFooter" FontSize="10" Opacity="0.4"
+                 HorizontalAlignment="Center"
+                 Foreground="{DynamicResource TextSecondaryBrush}"/>
+    </Border>
+  </Grid>
+</Window>
